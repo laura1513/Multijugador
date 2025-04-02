@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2295680721584386723}
   - component: {fileID: 6600590942436340488}
   m_Layer: 0
-  m_Name: Raqueta 2
+  m_Name: Player 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
