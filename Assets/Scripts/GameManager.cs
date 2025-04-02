@@ -13,6 +13,9 @@ public class GameManager : NetworkBehaviour
         if (IsServer)
         {
             player1Score.OnValueChanged += (oldValue, newValue) => UpdateScoreUI();
+            
+        } else
+        {
             player2Score.OnValueChanged += (oldValue, newValue) => UpdateScoreUI();
         }
     }
@@ -23,11 +26,12 @@ public class GameManager : NetworkBehaviour
         {
             if (player == 1)
                 player1Score.Value++;
-            else
+        } else
+        {
+            if (player == 2)
                 player2Score.Value++;
-
-            UpdateScoreUI();
         }
+        UpdateScoreUI();
     }
 
     void UpdateScoreUI()

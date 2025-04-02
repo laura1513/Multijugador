@@ -10,12 +10,12 @@ public class PaddleController : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    void Update()
+    private void Update()
     {
-        if (!IsOwner) return; // Solo el dueño del objeto puede controlarlo
-
-        float move = Input.GetAxis("Vertical");
-        rb.velocity = new Vector2(0, move * speed);
+        if (IsLocalPlayer)
+        {
+            float vertical = Input.GetAxis("Vertical");
+            rb.velocity = new Vector2(0, vertical) * speed;
+        }
     }
 }
