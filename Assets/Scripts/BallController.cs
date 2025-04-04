@@ -10,19 +10,19 @@ public class BallController : NetworkBehaviour
     private bool movimiento = false;
     private Vector2 dir;
     public GameManager gameManager;
-    public override void OnNetworkSpawn()
+    /*public override void OnNetworkSpawn()
     {
         if (IsServer) // Solo el servidor controla la pelota
         {
             LaunchBall();
         }
-    }
+    }*/
 
     void Start()
     {
     }
 
-    void LaunchBall()
+    public void LaunchBall()
     {
         //Numero random para la dirección inicial
         float randomX = Random.Range(-1f, 1f);
@@ -44,13 +44,7 @@ public class BallController : NetworkBehaviour
         if (transform.position.x < -8 || transform.position.x > 8)
         {
             ResetBallServerRpc();
-            if (IsServer)
-            {
-                gameManager.ScorePoint(1);
-            } else
-            {
-                gameManager.ScorePoint(2);
-            }
+            gameManager.ScorePoint(); // Aumentar el puntaje del jugador que anotó
         }
         //Limitar la pelota y hacer que rebote
 
