@@ -27,7 +27,7 @@ public class GameManager : NetworkBehaviour
         {
             player2Score.OnValueChanged += (oldValue, newValue) => UpdateScoreUI();
         }
-        
+
     }
     public void AparecenBotones()
     {
