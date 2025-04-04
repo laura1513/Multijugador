@@ -5,6 +5,7 @@ public class PaddleController : NetworkBehaviour
 {
     public float speed = 10f;
     private Rigidbody2D rb;
+    public BallController ballController;
 
     void Start()
     {
@@ -12,10 +13,29 @@ public class PaddleController : NetworkBehaviour
     }
     private void Update()
     {
-        if (IsLocalPlayer)
+        // El host mueve una raqueta y el cliente mueve la otra
+        if (IsOwner)
         {
-            float vertical = Input.GetAxis("Vertical");
-            rb.velocity = new Vector2(0, vertical) * speed;
+            float moveVertical = Input.GetAxis("Vertical");
+            Vector2 movement = new Vector2(0.0f, moveVertical);
+            rb.velocity = movement * speed;
+            // Limitar la posición de la raqueta
+            if (transform.position.y < -4f)
+            {
+                transform.position = new Vector2(transform.position.x, -4f);
+            }
+            if (transform.position.y > 4f)
+            {
+                transform.position = new Vector2(transform.position.x, 4f);
+            }
+
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ball"))
+        {
+            ballController.RebotarRaqueta();
         }
     }
 }
