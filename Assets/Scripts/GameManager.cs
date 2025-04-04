@@ -12,6 +12,10 @@ public class GameManager : NetworkBehaviour
     private float tiempoRestante = 10f; // Tiempo total en segundos
     public GameObject timeText;
     public BallController ballController;
+    public GameObject winnerText;
+    public GameObject objCanva;
+    public GameObject obj;
+    public GameObject desconectar;
 
     void Start()
     {
@@ -59,9 +63,28 @@ public class GameManager : NetworkBehaviour
         if (IsServer)
         {
             player1Score.Value++;
+            if (player1Score.Value >= 5)
+            {
+                // Aquí puedes agregar la lógica para finalizar el juego o reiniciar
+                winnerText.SetActive(true);
+                winnerText.GetComponent<Text>().text = "¡Jugador 1 gana!";
+                objCanva.SetActive(false);
+                obj.SetActive(false);
+                desconectar.SetActive(true);
+
+            }
         } else
         {
             player2Score.Value++;
+            if (player2Score.Value >= 5)
+            {
+                // Aquí puedes agregar la lógica para finalizar el juego o reiniciar
+                winnerText.SetActive(true);
+                winnerText.GetComponent<Text>().text = "¡Jugador 2 gana!";
+                objCanva.SetActive(false);
+                obj.SetActive(false);
+                desconectar.SetActive(true);
+            }
         }
         UpdateScoreUI();
     }
@@ -70,5 +93,9 @@ public class GameManager : NetworkBehaviour
     {
         player1ScoreText.text = player1Score.Value.ToString();
         player2ScoreText.text = player2Score.Value.ToString();
+    }
+    public void Desconectar()
+    {
+        Application.Quit();
     }
 }

@@ -13,4 +13,9 @@ public class NetworkButtons : MonoBehaviour
     {
         NetworkManager.Singleton.StartClient(); // Se une como cliente
     }
+    public void Disconnect()
+    {
+        NetworkManager.Singleton.Shutdown(); // Desconecta el cliente o servidor
+        gameManager.Desconectar(); // Llama al método de desconexión en el GameManager
+    }
 }

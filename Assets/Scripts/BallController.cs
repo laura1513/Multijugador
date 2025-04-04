@@ -37,7 +37,7 @@ public class BallController : NetworkBehaviour
             // Mover la pelota hacia adelante
             transform.Translate(dir * speed * Time.deltaTime);
         }
-        if (transform.position.y < -5 || transform.position.y > 5)
+        if (transform.position.y < -4.5 || transform.position.y > 4.5)
         {
             dir.y *= -1;
         }
