@@ -10,17 +10,6 @@ public class BallController : NetworkBehaviour
     private bool movimiento = false;
     private Vector2 dir;
     public GameManager gameManager;
-    /*public override void OnNetworkSpawn()
-    {
-        if (IsServer) // Solo el servidor controla la pelota
-        {
-            LaunchBall();
-        }
-    }*/
-
-    void Start()
-    {
-    }
 
     public void LaunchBall()
     {
@@ -43,18 +32,30 @@ public class BallController : NetworkBehaviour
         }
         if (transform.position.x < -8 || transform.position.x > 8)
         {
+            //Sumar puntos al jugador que anota
+            if (transform.position.x < -8)
+            {
+                gameManager.ScorePointClientRpc(2);
+            }
+            else if (transform.position.x > 8)
+            {
+                gameManager.ScorePointClientRpc(1);
+            }
             ResetBallServerRpc();
-            gameManager.ScorePoint(); // Aumentar el puntaje del jugador que anotó
         }
-        //Limitar la pelota y hacer que rebote
 
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.gameObject.CompareTag("Goal"))
+        if (collision.gameObject.CompareTag("Goal1"))
         {
+            gameManager.ScorePointClientRpc(2);
+            ResetBallServerRpc();
+        } else if (collision.gameObject.CompareTag("Goal2"))
+        {
+            gameManager.ScorePointClientRpc(1);
             ResetBallServerRpc();
         }
         else
@@ -74,7 +75,6 @@ public class BallController : NetworkBehaviour
     [ServerRpc]
     void ResetBallServerRpc()
     {
-        
         transform.position = Vector2.zero;
         LaunchBall();
     }
