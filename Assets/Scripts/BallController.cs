@@ -29,6 +29,16 @@ public class BallController : NetworkBehaviour
         if (transform.position.y < -4.5 || transform.position.y > 4.5)
         {
             dir.y *= -1;
+            //Aumentar la velocidad horizontal de la pelota hasta un máximo
+            if (dir.x < 0)
+            {
+                dir.x -= rebote * Time.deltaTime;
+            }
+            else
+            {
+                dir.x += rebote * Time.deltaTime;
+            }
+
         }
         if (transform.position.x < -8 || transform.position.x > 8)
         {
@@ -44,29 +54,6 @@ public class BallController : NetworkBehaviour
             ResetBallServerRpc();
         }
 
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        if (collision.gameObject.CompareTag("Goal1"))
-        {
-            gameManager.ScorePointClientRpc(2);
-            ResetBallServerRpc();
-        } else if (collision.gameObject.CompareTag("Goal2"))
-        {
-            gameManager.ScorePointClientRpc(1);
-            ResetBallServerRpc();
-        }
-        else
-        {
-            collisionPoints = collision.contacts;
-
-            //Calcular la dirección de rebote
-            Vector2 dir = (collisionPoints[0].point - (Vector2)transform.position).normalized;
-        }
-        
-        
     }
     public void RebotarRaqueta()
     {

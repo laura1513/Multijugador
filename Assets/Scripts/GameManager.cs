@@ -19,6 +19,36 @@ public class GameManager : NetworkBehaviour
     public GameObject obj;
     public GameObject desconectar;
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+        }
+    }
+    private void OnClientConnected(ulong id)
+    {
+        if (IsHost)
+        {
+            // Si el cliente es el host, se le asigna la puntuación inicial
+            player1Score.Value = 0;
+            player2Score.Value = 0;
+            ClienteConectadoClientRpc();
+        }
+        else
+        {
+            // Si el cliente no es el host, se le asigna la puntuación inicial
+            player1Score.Value = 0;
+            player2Score.Value = 0;
+            ClienteConectadoClientRpc();
+        }
+    }
+    private void OnClientDisconnected(ulong id)
+    {
+        // Aquí puedes manejar la desconexión del cliente si es necesario
+        Debug.Log("Cliente desconectado: " + id);
+    }
     void Start()
     {
         // Escuchamos cambios en ambas puntuaciones en todos los clientes
@@ -136,5 +166,15 @@ public class GameManager : NetworkBehaviour
     public void Desconectar()
     {
         Application.Quit();
+    }
+    public void ClienteConectado()
+    {
+        timeText.SetActive(true);
+        timeText.GetComponent<Text>().text = "Esperando a que el host inicie la partida";
+    }
+    [ClientRpc]
+    public void ClienteConectadoClientRpc()
+    {
+        ClienteConectado();
     }
 }
